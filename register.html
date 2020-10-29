@@ -27,8 +27,31 @@
         <p>Repeat Password</p>
         <input type="password" name="password2" placeholder="Repeat Password" minlength="8" required>
         <p>Major (Multiple Choises)</p>
-        <p>Minor (Optional)</p>
+        <select name="Major" required>
+            <option>Undecided</option>
+            <option>Computer Science</option>
+            <option>Computer Engineering</option>
+            <option>Software Engineering</option>
+            <option>General Engineering</option>
+            <option>English</option>
+            <option>Mathematics</option>
+            <option>Astronomy</option>
+            <option>Sociology</option>
+            <option>Law</option>
+            <option>Other</option>
+        </select>
+        <p>Minor (Optional)</p> 
+        <input type="text" name="minor" >
         <p>Security Question: What city were you born in?</p>
+        <input type="radio" name="s_question" value="1" required>What was the house number/street you lived in as a child?<br>
+        <input type="radio" name="s_question" value="2">What were the last four digits of your childhood telephone number<br>
+        <input type="radio" name="s_question" value="3">What primary school did you attend?<br>
+        <input type="radio" name="s_question" value="4">What city or town was jour first job in?<br>
+        <input type="radio" name="s_question" value="5">Where did you meet your spouse or partner?<br>
+        <input type="radio" name="s_question" value="6">What is the middle name of your child?<br>
+        <input type="radio" name="s_question" value="7">Where did your parents meet?<br>
+        <input type="radio" name="s_question" value="8">What is your grandmother's maiden name?<br>
+        <input type="password" name="SQAns" placeholder="Answer to selected security question" required>
         <button>Submit</button>
     </body>
 </html>
