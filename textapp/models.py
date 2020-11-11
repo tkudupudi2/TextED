@@ -11,6 +11,8 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(20), unique = True, nullable = False)
     email = db.Column(db.String(120), unique = True, nullable = False)
+    major = db.Column(db.String(20), unique = False, nullable = False)
+    minor = db.Column(db.String(20), unique = False, nullable = True)
     image_file = db.Column(db.String(20), nullable = False, default = 'default.jpg')
     password = db.Column(db.String(60), nullable = False)
 
@@ -29,3 +31,7 @@ class User(db.Model, UserMixin):
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+
+# python3
+# from textapp import db
+# db.drop_all() / db.create_all()

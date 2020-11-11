@@ -78,3 +78,11 @@ body {
   .account-heading {
     font-size: 2.5rem;
   }
+
+  .taganimation {
+    font-size: 2em;
+    display:inline;
+    margin:0px;
+    font-weight: lighter;
+    text-align: center;
+  }

@@ -1,14 +1,38 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>About Page</h1>
+    <h1 class="about_heading">About Page</h1>
     <h2>Meet the Devs</h2>
     <h3>Bin Guo</h3>
     <h3>Di Li</h3>
     <h3>Kobern Dare</h3>
+    <h3 class="name_title">Developer</h3>
     <p style="float: left;"><img src="../static/devs_pics/Kobern Dare.jpg" alt="Kobern Dare" height="200px" width="160px"></p>
     <p style="padding-bottom: 150px;">
         Kobern Dare is a software engineering major with a minor in Creative Writing. He is a member of the SJSU Game Dev Club and the writer and developer of the highly impressive Twine game <a href="https://kddasa.itch.io/road-to-nowhere-interesting"><em>Road to Nowhere Interesting</em></a>. He hopes to find a future carrer in the gaming industry as a director.
     </p>
     <h3>Tanav Kudupudi</h3>
-    <p>This is where we write about ourselves!!</p>
+    <h3 class="name_title">Developer</h3>
+    <p style="float: left;"><img src="../static/devs_pics/Tanav.jpg" alt="Tanav Kudupudi" height="200px" width="160px"></p>
+    <p>Tanav Kudupudi is an undergraduate student at San Jose State University pursuing a degree in Software Engineering. He has a great passion for technology and has built several PCs as a hobby. A fun fact about him is that he has travelled to over 10 different countries in his lifetime. He hopes to pursue a career in Data Science/Analytics to make the cyberworld a safer place for future generations.</p>
+    <style>
+        h1 {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: end;
+            text-shadow: darkgray;
+        }
+        h2 {
+            font-size: 3em;
+            font-weight: normal;
+        }
+        h3 {
+            font-size: 2em;
+            font-weight: lighter;
+        }
+        .name_title {
+            font-weight: lighter;
+            font-style: italic;
+            font-size: 1em;
+        }
+    </style>
 {% endblock content %}
