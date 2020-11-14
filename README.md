@@ -2,7 +2,7 @@
 An educational web application made to connect virtually with friends, peers, and professors during COVID-19.
 
 ## Application requirements
-Have **Flask,Python3** and **SqlLite** is installed.
+Have **Flask,Python3** and **SqlLite** installed.
 ## How to run
 - Navigate to the project folder using the terminal.
 - Run : python3 run.py
