@@ -32,17 +32,17 @@ class User(db.Model, UserMixin):
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.image_file}')"
     
-    class Appointment(db.Model):
-        id = db.Column(db.Integer, primary_key=True)
-        user = db.Column(db.Integer,db.ForeignKey('user.id'))
-        times = db.Column(db.String(120), unique=True, nullable=False)
-        infos=db.Column(db.String(120))
+class Appointment(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user = db.Column(db.Integer,db.ForeignKey('user.id'))
+    times = db.Column(db.String(120), unique=True, nullable=False)
+    infos=db.Column(db.String(120))
 
-    def init_db():
-        db.app=app
-        db.init_app(app=app)
-        db.create_all()
-    init_db()
+def init_db():
+    db.app=app
+    db.init_app(app=app)
+    db.create_all()
+init_db()
     
 # python3
 # from textapp import db
