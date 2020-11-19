@@ -1,4 +1,126 @@
 {% extends "layout.html" %}
 {% block content %}
-    <h1>Chat Page</h1>
-{% endblock content %}
+    <link rel="stylesheet" type="text/css" href="../static/css/qq.css">
+    <div class="qqBox">
+        <div class="BoxHead">
+            <div class="headImg">
+                <img src="../static/img/user.jpg">
+            </div>
+            <div class="internetName">{{ user }}</div>
+        </div>
+        <div class="context">
+            <div class="conLeft">
+                <ul id="users">
+
+                </ul>
+            </div>
+            <div class="conRight">
+                <div class="Righthead">
+                    <div class="headName"></div>
+                    <div class="headConfig">
+                        <ul>
+                            <li><img src="../static/img/1.jpg"></li>
+                            <li><img src="../static/img/2.jpg"></li>
+                            <li><img src="../static/img/3.jpg"></li>
+                            <li><img src="../static/img/4.jpg"></li>
+
+                        </ul>
+                    </div>
+                </div>
+                <div class="RightCont">
+                    <ul class="newsList">
+                        {#                        <li><div class="nesHead"><img src="img/6.jpg"></div><div class="news"><img class="jiao" src="img/20170926103645_03_02.jpg">33</div></li>#}
+                    </ul>
+                </div>
+                <div class="RightFoot">
+                    <div class="inputBox">
+                        <textarea placeholder="Your Message" id="dope"
+                                  style="width: 99%;height: 75px; border: none;outline: none;" name="" rows=""
+                                  cols=""></textarea>
+                        <button class="sendBtn">Send(S)</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="{{ url_for('static', filename = "js/jquery.min.js") }}"></script>
+
+    <script>
+        function sse() {
+            var source = new EventSource('/stream');
+            source.onmessage = function (e) {
+                if (e.data == 1) {
+                    $(".headName").text("Link successful");
+                    return
+                }
+
+                if (e.data.indexOf("notice:") != -1) {
+                    $(".headName").text(e.data);
+                    if (e.data.indexOf("get into") != -1) {
+                        let html='<li>';
+                         html+='<div class="liLeft"><img src="../static/img/user.jpg"></div>';
+                         html+='<div class="liRight">';
+                         html+='<span class="intername">'+e.data.replace("notice: user ","").replace(" get into the room!","")+'</span>';
+                         html+='</div>';
+                         html+='</li>';
+                         $("#users").append(html);
+                    }
+                    if (e.data.indexOf("quit") != -1) {
+                        $("#users").find('.intername').each(function () {
+                            let than=$(this)
+                            if(e.data.replace("notice: user ","").replace(" quit the room!","")===than.text()){
+                                than.parent().parent().remove()
+                            }
+
+                        })
+                    }
+                    return;
+                }
+                if (e.data.indexOf("me_") != -1) {
+                    let html = "";
+                    html += '<li>';
+                    html += '<div class="nesHead">';
+                    html += '</div>';
+                    html += '</li>';
+                    html += '<li><div class="answerHead">';
+                    html += '<img src="../static/img/user.jpg">';
+                    html += '</div>';
+                    html += '<div class="answers">';
+                    html += '<em>'+e.data.replace("me_", "") + '</em></div>';
+                    html += '</li>';
+                    $(".newsList").append(html);
+                    return;
+                }
+                let html = "";
+                html += '<li>';
+                html += '<div class="nesHead">';
+                html += '<img src="../static/img/user.jpg">';
+                html += '</div>';
+                html += '<div class="news">';
+                html += e.data;
+                html += '</div>';
+                html += '</li>';
+                html += '<li>';
+                html += '<div class="answerHead">';
+                html += '</div>';
+                html += '</li>';
+                $(".newsList").append(html);
+                {#out.innerHTML = e.data + '\n' + out.innerHTML;#}
+            };
+        }
+
+        $('.sendBtn').on('click', function (e) {
+            var news = $('#dope').val();
+            if (news == '') {
+                alert('涓嶈兘涓虹┖');
+            } else {
+                let m = $('#dope').val() + 'me_';
+                $.post('/send', {'message': m});
+                $(this).val('');
+            }
+
+        });
+        sse();
+    </script>
+{% endblock %}

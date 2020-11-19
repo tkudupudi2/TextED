@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block content %}
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename = "css/data.css") }}">
+    <script type="text/javascript" src="{{ url_for('static', filename = "js/jquery.min.js") }}"></script>
+
+<div class="box">
+    <section class="date">
+        <div class="head">
+            <div class="prev">Last month</div>
+            <div class="tomon"><span class="year"></span>Year<span class="month"></span>Month</div>
+            <div class="next">Next month</div>
+        </div>
+        <ol>
+            <li>Sunday</li>
+            <li>Monday</li>
+            <li>Tuesday</li>
+            <li>Wednesday</li>
+            <li>Thursday</li>
+            <li>Friday</li>
+            <li>Saturday</li>
+        </ol>
+        <ul>
+
+        </ul>
+    </section>
+</div>
+    <form method="post" id="date">
+        <input hidden name="id" id="id" type="text" value="">
+        <input hidden name="type" id="type" type="text" value="">
+        <input hidden name="time" id="time" type="text" value="">
+        <textarea id="info" name="info" placeholder="info"></textarea>
+        <button onclick="get_submit()" type="submit">Submit</button>
+    </form>
+    <script>
+    function  get_submit() {
+        if(is_edit){
+             $("#id").val(edit_id);
+             $("#type").val("edit");
+        }
+        else{
+             $("#type").val("add");
+        }
+        let time=$("time").val();
+        let info=$("#info").val();
+        if(time===""){
+            alert("select date!");
+            return;
+        }
+        else if(info===""){
+            alert("info is not null");
+            return;
+        }
+        else{
+            $("#date").submit()
+        }
+    }
+    var times=[
+            {% for i in times %}
+                "{{ i }}",
+            {% endfor %}
+        ]
+
+    </script>
+        <script type="text/javascript" src="{{ url_for('static', filename = "js/data.js") }}"></script>
+{% endblock content %}

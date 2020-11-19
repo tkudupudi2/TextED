@@ -23,11 +23,58 @@ def classes():
 
 @app.route('/chat')
 def chat():
-    return render_template('chat.html', title = 'Chat')
+    if 'user' not in flask.session:
+        return flask.redirect('/login')
+    user=flask.session['user']
+    flask.session['user'] = user
+    r.publish('chat', 'notice: user {} get into the room!'.format(flask.session['user']))
+    return render_template('chat.html', title = 'Chat',user=user)
 
-@app.route('/calendar')
+@app.route('/calendar',methods = ['GET', 'POST'])
 def calendar():
-    return render_template('calendar.html', title = 'Calendar')
+    if 'email' not in flask.session:
+        return flask.redirect('/login')
+    email = flask.session['email']
+    if request.method=="GET":
+        time = []
+        user = User.query.filter_by(email=email).first()
+        infos=Appointment.query.filter_by(user=user.id).all()
+        if infos:
+            for i in infos:
+                time.append(i.times)
+        return render_template('appointment.html', title = 'Calendar',times=time)
+    if request.method=="POST":
+        method=request.form.get('method')
+        if method:
+            time=request.form.get('time')
+            user = User.query.filter_by(email=email).first()
+            info = Appointment.query.filter_by(user=user.id).all()
+            info_text=""
+            id=0
+            for i in info:
+                if i.times==time:
+                    info_text=i.infos
+                    id=i.id
+            return make_response(jsonify({'info':info_text,"id":id}))
+        else:
+            user = User.query.filter_by(email=email).first()
+            time = request.form.get('time')
+            type = request.form.get('type')
+            info = request.form.get('info')
+            print(user,time,type,info)
+            if type=='add':
+                a=Appointment(user=user.id,times=time,infos=info)
+                db.session.add(a)
+                db.session.commit()
+                return redirect('/calendar')
+            if type=='edit':
+                id=request.form.get('id')
+                info=request.form.get("info")
+                appointment = Appointment.query.filter_by(id=int(id)).first()
+                appointment.infos=info
+                db.session.commit()
+                return redirect('/calendar')
+
 
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
@@ -60,7 +107,13 @@ def login():
 
 @app.route("/logout")
 def logout():
+    if 'user' not in flask.session:
+        return flask.redirect('/login')
+    user = flask.session['user']
+    r.publish('chat', 'notice: user {} quit the room!'.format(user))
     logout_user()
+    flask.session.pop('user')
+    flask.session.pop('email')
     return redirect(url_for('home'))
 
 def save_picture(form_picture):
@@ -135,3 +188,20 @@ def reset_token(token):
         flash('Your password has been updated! You are now able to log in', 'success')
         return redirect(url_for('login'))
     return render_template('reset_token.html', title = 'Reset Password', form = form)
+def event_stream():
+    pubsub=r.pubsub()
+    pubsub.subscribe('chat')
+    for message in pubsub.listen():
+        yield 'data:{}\n\n'.format(message['data'])
+@app.route('/send',methods=['POST'])
+def sends():
+    message=flask.request.form['message']
+    user=flask.session.get('user','anonymous')
+    now=datetime.datetime.now().replace(microsecond=0).time()
+    r.publish('chat','[{}] {} : {}'.format(now.isoformat(),user,message))
+    return flask.Response(status=204)
+
+
+@app.route('/stream')
+def stream():
+    return flask.Response(event_stream(),mimetype='text/event-stream')
