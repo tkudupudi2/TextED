@@ -13,8 +13,8 @@ Have **Flask, Python3, SqlLite**, and **Reddis server** installed.
 ## Features: 
 * [x] Register: Users are able to create an account.
 * [x] Login: a login manager that keeps users authenticated.
-* [ ] Chat: Registered users can privately chat with other registered users.
-* [ ] Calendar: Registered users can setup/edit appointments and events.
+* [x] Chat: Registered users can privately chat with other registered users.
+* [x] Calendar: Registered users can setup/edit appointments and events.
 * [x] Logout: a sign out button that allows users to logout.
 
 ## License
