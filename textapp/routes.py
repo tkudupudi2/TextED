@@ -21,6 +21,10 @@ user_socket_dict={}
 def home():
     return render_template('home.html')
 
+@app.route('/userhome')
+def userhome():
+    return render_template('userhome.html', title = 'Home')
+
 @app.route('/about')
 def about():
     return render_template('about.html', title = 'About')
@@ -32,7 +36,7 @@ def classes():
 @app.route('/register', methods = ['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('userhome'))
     form = RegistrationForm()
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
@@ -46,7 +50,7 @@ def register():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('userhome'))
     form = LoginForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
@@ -54,8 +58,8 @@ def login():
             flask.session['user']=user.username
             flask.session['email']=user.email
             login_user(user, remember=form.remember.data)
-            return redirect(url_for('home'))
-            return redirect(next_page) if next_page else redirect(url_for('home'))
+            return redirect(url_for('userhome'))
+            return redirect(next_page) if next_page else redirect(url_for('userhome'))
         else:
             flash('Login Unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', title='Login', form=form)

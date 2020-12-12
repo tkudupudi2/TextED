@@ -24,12 +24,13 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarToggle">
               <div class="navbar-nav mr-auto">
-                <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
                 {% if current_user.is_authenticated %}
+                <a class="nav-item nav-link" href="{{ url_for('userhome') }}">Home</a>
                 <a class="nav-item nav-link" href="{{ url_for('classes') }}">Classes</a>
                 <a class="nav-item nav-link" href="{{ url_for('chat') }}">Chat</a>
                 <a class="nav-item nav-link" href="{{ url_for('calendar') }}">Calendar</a>
                 {% else %}
+                <a class="nav-item nav-link" href="{{ url_for('home') }}">Home</a>
                 <a class="nav-item nav-link" href="{{ url_for('about') }}">About</a>
                 {% endif %}
               </div>

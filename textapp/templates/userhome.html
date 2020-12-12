@@ -1,0 +1,7 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1>Welcome {{ current_user.username }}!</h1>
+<button onclick="location.href = 'http://127.0.0.1:5000/account'"><img src="../static/app_sc/account.png" alt="Account" height="400px" width="450px" ></button>
+<button onclick="location.href = 'http://127.0.0.1:5000/chat'"><img src="../static/app_sc/chat.png" alt="Chat" height="400px" width="450px" ></button>
+<button onclick="location.href = 'http://127.0.0.1:5000/calendar'"><img src="../static/app_sc/calendar.png" alt="Calendar" height="400px" width="450px" ></button>
+{% endblock content %}
